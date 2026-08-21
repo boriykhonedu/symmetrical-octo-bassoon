@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edu Insight — Learning Center</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+  :root{
+    --bg:#F7F8FC;
+    --white:#FFFFFF;
+    --cobalt:#3157D5;
+    --cobalt-dark:#2647B8;
+    --cobalt-soft:#6C8EF5;
+    --text-deep:#111827;
+    --text-muted:#667085;
+    --soft-blue:#EEF3FF;
+    --green:#18A878;
+    --border:#E4E7EC;
+    --border-strong:#D0D5DD;
+
+    --sans:'Manrope', sans-serif;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--bg);
+    color:var(--text-deep);
+    font-family:var(--sans);
+    overflow-x:hidden;
+  }
+
+  img,svg{display:block;}
+  a{ color:inherit; text-decoration:none; }
+
+  .container{
+    max-width:1200px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  /* ============ BACKGROUND ATMOSPHERE ============ */
+  .bg-atmosphere{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    overflow:hidden;
+  }
+  .bg-atmosphere::before{
+    content:"";
+    position:absolute;
+    top:-15%; right:-10%;
+    width:800px; height:800px;
+    background:radial-gradient(circle, rgba(49,87,213,0.07), transparent 65%);
+  }
+  .bg-atmosphere::after{
+    content:"";
+    position:absolute;
+    bottom:-20%; left:-15%;
+    width:800px; height:800px;
+    background:radial-gradient(circle, rgba(108,142,245,0.07), transparent 65%);
+  }
+
+  /* ============ HEADER ============ */
+  header{
+    position:fixed;
+    top:18px; left:0; right:0;
+    z-index:100;
+  }
+  .nav-shell{
+    max-width:1200px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+  .nav-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:rgba(255,255,255,0.85);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:14px 22px;
+    box-shadow:0 8px 30px rgba(16,24,40,0.05);
+    transition:box-shadow 0.3s ease;
+  }
+  header.scrolled .nav-inner{
+    box-shadow:0 10px 34px rgba(16,24,40,0.08);
+  }
+  .logo{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    font-weight:800;
+    font-size:19px;
+    letter-spacing:-0.2px;
+  }
+  .logo-mark{
+    width:9px;height:9px;
+    border-radius:50%;
+    background:var(--cobalt);
+  }
+  .logo .edu{ color:var(--cobalt); }
+  .logo .insight{ color:var(--text-deep); }
+  .logo-sub{
+    font-size:9px;
+    letter-spacing:2.5px;
+    text-transform:uppercase;
+    color:var(--text-muted);
+    font-weight:700;
+    margin-left:2px;
+    padding-top:3px;
+  }
+  nav ul{
+    display:flex;
+    gap:34px;
+    list-style:none;
+  }
+  nav ul li a{
+    font-size:14px;
+    font-weight:600;
+    color:var(--text-muted);
+    transition:color 0.25s ease;
+  }
+  nav ul li a:hover{ color:var(--text-deep); }
+  .nav-links{ display:flex; align-items:center; gap:36px; }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:var(--sans);
+    font-weight:700;
+    font-size:14px;
+    padding:13px 24px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:all 0.25s ease;
+    border:1px solid transparent;
+    white-space:nowrap;
+  }
+  .btn-primary{
+    background:var(--cobalt);
+    color:var(--white);
+  }
+  .btn-primary:hover{
+    background:var(--cobalt-dark);
+    transform:translateY(-2px);
+    box-shadow:0 8px 24px rgba(49,87,213,0.24);
+  }
+  .btn-secondary{
+    background:var(--white);
+    border:1px solid var(--border-strong);
+    color:var(--text-deep);
+  }
+  .btn-secondary:hover{
+    background:#F9FAFB;
+    transform:translateY(-2px);
+  }
+  .btn-small{ padding:10px 18px; font-size:13px; }
+  .btn-ghost{
+    background:transparent;
+    color:var(--cobalt);
+    padding:0;
+    font-size:14px;
+    font-weight:700;
+    gap:6px;
+  }
+  .btn-ghost .arrow{ transition:transform 0.25s ease; }
+  .btn-ghost:hover .arrow{ transform:translateX(4px); }
+
+  .btn-on-cobalt{
+    background:var(--white);
+    color:var(--cobalt);
+  }
+  .btn-on-cobalt:hover{
+    background:#F0F3FF;
+    transform:translateY(-2px);
+  }
+  .btn-outline-white{
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.5);
+    color:var(--white);
+  }
+  .btn-outline-white:hover{
+    background:rgba(255,255,255,0.1);
+    transform:translateY(-2px);
+  }
+
+  .hamburger{ display:none; }
+
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--cobalt);
+    outline-offset:2px;
+  }
+
+  /* ============ HERO ============ */
+  .hero{
+    position:relative;
+    z-index:1;
+    padding:190px 0 120px;
+  }
+
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:0.5px;
+    color:var(--cobalt);
+    background:var(--soft-blue);
+    border-radius:999px;
+    padding:8px 16px;
+    margin-bottom:26px;
+    opacity:0;
+    animation:fadeUp 0.7s ease forwards;
+  }
+
+  h1.headline{
+    font-weight:800;
+    font-size:56px;
+    line-height:1.12;
+    letter-spacing:-1.2px;
+    color:var(--text-deep);
+    opacity:0;
+    animation:fadeUp 0.8s ease 0.1s forwards;
+  }
+  h1.headline em{
+    font-style:normal;
+    color:var(--cobalt);
+  }
+
+  .hero-lead{
+    margin-top:22px;
+    font-size:17px;
+    line-height:1.65;
+    color:var(--text-muted);
+    max-width:500px;
+    opacity:0;
+    animation:fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero-cta{
+    display:flex;
+    gap:14px;
+    margin-top:36px;
+    opacity:0;
+    animation:fadeUp 0.8s ease 0.3s forwards;
+  }
+
+  .hero-trust{
+    margin-top:44px;
+    display:flex;
+    gap:32px;
+    opacity:0;
+    animation:fadeUp 0.8s ease 0.4s forwards;
+  }
+  .hero-trust-item .num{
+    font-size:20px;
+    font-weight:800;
+    color:var(--text-deep);
+  }
+  .hero-trust-item .label{
+    font-size:12px;
+    color:var(--text-muted);
+    margin-top:2px;
+  }
+
+  @keyframes fadeUp{
+    from{ opacity:0; transform:translateY(18px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:60px;
+    align-items:center;
+  }
+
+  /* Hero visual — bright dashboard */
+  .hero-visual{
+    position:relative;
+    height:520px;
+    opacity:0;
+    animation:fadeUp 0.9s ease 0.35s forwards;
+  }
+
+  .dash-card{
+    position:absolute;
+    top:30px; right:0;
+    width:360px;
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:24px;
+    padding:28px;
+    box-shadow:0 20px 50px rgba(16,24,40,0.08);
+  }
+  .dash-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:22px;
+  }
+  .dash-brand{
+    font-weight:800;
+    font-size:14px;
+    letter-spacing:0.3px;
+    color:var(--text-deep);
+  }
+  .dash-status{
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--green);
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .dash-status::before{
+    content:"";
+    width:6px;height:6px;border-radius:50%;
+    background:var(--green);
+  }
+  .dash-title{
+    font-size:12px;
+    color:var(--text-muted);
+    margin-bottom:18px;
+    font-weight:600;
+  }
+  .progress-row{ margin-bottom:16px; }
+  .progress-row:last-child{ margin-bottom:0; }
+  .progress-label{
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    font-weight:700;
+    color:var(--text-deep);
+    margin-bottom:8px;
+  }
+  .progress-track{
+    height:7px;
+    border-radius:4px;
+    background:var(--soft-blue);
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    border-radius:4px;
+    background:linear-gradient(90deg, var(--cobalt), var(--cobalt-soft));
+    width:0%;
+    transition:width 1.4s cubic-bezier(0.22,1,0.36,1);
+  }
+  .progress-fill.purple{ background:linear-gradient(90deg, #6C8EF5, #9AB0F8); }
+  .progress-fill.green{ background:linear-gradient(90deg, var(--green), #4FCBA3); }
+
+  .float-card{
+    position:absolute;
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:14px 18px;
+    box-shadow:0 12px 30px rgba(16,24,40,0.08);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:13px;
+    font-weight:700;
+    color:var(--text-deep);
+  }
+  .float-card .fc-icon{
+    width:32px; height:32px;
+    border-radius:9px;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .fc-1{ top:0; left:0; animation:floatSlow 5s ease-in-out infinite; }
+  .fc-1 .fc-icon{ background:var(--soft-blue); }
+  .fc-2{ bottom:40px; left:10px; animation:floatSlow 6s ease-in-out infinite 0.5s; }
+  .fc-2 .fc-icon{ background:#E6F7F1; }
+
+  @keyframes floatSlow{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-10px); }
+  }
+
+  /* ============ SECTION SHARED ============ */
+  section{
+    position:relative;
+    z-index:1;
+    padding:110px 0;
+  }
+  .bg-white{ background:var(--white); }
+  .bg-soft{ background:var(--soft-blue); }
+
+  .section-head{
+    max-width:600px;
+    margin-bottom:56px;
+  }
+  .eyebrow-sm{
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--cobalt);
+    margin-bottom:14px;
+    display:block;
+  }
+  h2.section-title{
+    font-weight:800;
+    font-size:36px;
+    line-height:1.25;
+    letter-spacing:-0.8px;
+    color:var(--text-deep);
+  }
+  .section-sub{
+    margin-top:16px;
+    font-size:16px;
+    color:var(--text-muted);
+    line-height:1.6;
+  }
+
+  .reveal{
+    opacity:0;
+    transform:translateY(24px);
+    transition:opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.in-view{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  /* ============ OFFERS ============ */
+  .offers-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+  }
+  .offer-card{
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:36px;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 8px 30px rgba(16,24,40,0.05);
+    transition:transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .offer-card:hover{ transform:translateY(-6px); box-shadow:0 16px 40px rgba(16,24,40,0.08); }
+  .offer-card::before{
+    content:"";
+    position:absolute;
+    top:-60px; right:-60px;
+    width:180px; height:180px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(49,87,213,0.06), transparent 70%);
+  }
+  .offer-card.green::before{
+    background:radial-gradient(circle, rgba(24,168,120,0.08), transparent 70%);
+  }
+  .offer-num{
+    font-weight:800;
+    font-size:40px;
+    letter-spacing:-1px;
+    color:var(--cobalt);
+    margin-bottom:18px;
+  }
+  .offer-card.green .offer-num{ color:var(--green); }
+  .offer-title{
+    font-size:19px;
+    font-weight:800;
+    margin-bottom:10px;
+    color:var(--text-deep);
+  }
+  .offer-desc{
+    font-size:14.5px;
+    color:var(--text-muted);
+    line-height:1.6;
+    margin-bottom:22px;
+    max-width:380px;
+  }
+
+  /* ============ LEVEL TEST ============ */
+  .quiz-card{
+    max-width:640px;
+    margin:0 auto;
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:24px;
+    padding:44px;
+    box-shadow:0 8px 30px rgba(16,24,40,0.05);
+  }
+  .quiz-stage{ text-align:center; }
+  .quiz-intro-icon{
+    width:60px;height:60px;
+    border-radius:16px;
+    background:var(--soft-blue);
+    display:flex; align-items:center; justify-content:center;
+    margin:0 auto 22px;
+  }
+  .quiz-intro-icon svg{ width:26px; height:26px; }
+  .quiz-intro-text{
+    font-size:15px;
+    color:var(--text-muted);
+    max-width:400px;
+    margin:0 auto 28px;
+    line-height:1.6;
+  }
+  .quiz-progress{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:32px;
+  }
+  .quiz-progress-track{
+    flex:1;
+    height:6px;
+    border-radius:4px;
+    background:var(--soft-blue);
+    overflow:hidden;
+  }
+  .quiz-progress-fill{
+    height:100%;
+    width:10%;
+    background:linear-gradient(90deg, var(--cobalt), var(--cobalt-soft));
+    border-radius:4px;
+    transition:width 0.35s ease;
+  }
+  .quiz-progress-label{
+    font-size:13px;
+    font-weight:700;
+    color:var(--text-muted);
+    white-space:nowrap;
+  }
+  .quiz-question{
+    font-size:19px;
+    font-weight:800;
+    color:var(--text-deep);
+    text-align:left;
+    margin-bottom:22px;
+    line-height:1.4;
+  }
+  .quiz-options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .quiz-option{
+    text-align:left;
+    padding:15px 18px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    background:var(--white);
+    font-size:14.5px;
+    font-weight:600;
+    color:var(--text-deep);
+    cursor:pointer;
+    transition:all 0.2s ease;
+  }
+  .quiz-option:hover{
+    border-color:var(--cobalt);
+    background:var(--soft-blue);
+  }
+  .quiz-result-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:76px;height:76px;
+    border-radius:50%;
+    background:linear-gradient(135deg, var(--cobalt), var(--cobalt-soft));
+    color:var(--white);
+    font-size:26px;
+    font-weight:800;
+    margin:0 auto 22px;
+  }
+  .quiz-result-title{
+    font-size:20px;
+    font-weight:800;
+    color:var(--text-deep);
+    margin-bottom:12px;
+  }
+  .quiz-result-desc{
+    font-size:14.5px;
+    color:var(--text-muted);
+    line-height:1.6;
+    max-width:440px;
+    margin:0 auto 28px;
+  }
+  .quiz-result-cta{
+    display:flex;
+    gap:12px;
+    justify-content:center;
+  }
+
+  @media (max-width:430px){
+    .quiz-card{ padding:28px 22px; }
+    .quiz-result-cta{ flex-direction:column; }
+  }
+
+  /* ============ COURSES ============ */
+  .courses-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:24px;
+  }
+  .course-card{
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:34px 30px;
+    box-shadow:0 8px 30px rgba(16,24,40,0.05);
+    transition:transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    cursor:pointer;
+  }
+  .course-card:hover{
+    transform:translateY(-6px);
+    border-color:var(--cobalt);
+    box-shadow:0 16px 40px rgba(49,87,213,0.12);
+  }
+  .course-icon{
+    width:52px;height:52px;
+    border-radius:14px;
+    background:var(--soft-blue);
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:24px;
+    transition:background 0.3s ease, transform 0.3s ease;
+  }
+  .course-card:hover .course-icon{ transform:translateY(-2px) scale(1.04); }
+  .course-icon svg{ width:24px; height:24px; stroke:var(--cobalt); }
+  .course-name{
+    font-size:20px;
+    font-weight:800;
+    margin-bottom:8px;
+    color:var(--text-deep);
+  }
+  .course-desc{
+    font-size:14px;
+    color:var(--text-muted);
+    margin-bottom:24px;
+    line-height:1.55;
+  }
+
+  /* ============ BENEFITS ============ */
+  .benefits-grid{
+    display:grid;
+    grid-template-columns:1.3fr 1fr 1fr;
+    grid-template-rows:auto auto;
+    gap:20px;
+  }
+  .benefit-card{
+    padding:30px 26px;
+    border-radius:20px;
+    border:1px solid var(--border);
+    background:var(--white);
+    transition:transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .benefit-card:hover{ transform:translateY(-4px); box-shadow:0 12px 30px rgba(16,24,40,0.06); }
+  .benefit-card.large{
+    grid-row:span 2;
+    background:linear-gradient(160deg, var(--soft-blue), var(--white));
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  .benefit-icon{
+    width:44px;height:44px;
+    border-radius:12px;
+    background:var(--soft-blue);
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:18px;
+  }
+  .benefit-card.large .benefit-icon{ background:var(--white); }
+  .benefit-icon svg{ width:20px; height:20px; stroke:var(--cobalt); }
+  .benefit-title{
+    font-size:16px;
+    font-weight:800;
+    margin-bottom:8px;
+    color:var(--text-deep);
+  }
+  .benefit-card.large .benefit-title{ font-size:20px; }
+  .benefit-desc{
+    font-size:13.5px;
+    color:var(--text-muted);
+    line-height:1.6;
+  }
+
+  /* ============ RESULTS ============ */
+  .results-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:24px;
+  }
+  .result-card{
+    text-align:center;
+    padding:44px 24px;
+    border-radius:20px;
+    background:var(--white);
+    border:1px solid var(--border);
+    box-shadow:0 8px 30px rgba(16,24,40,0.05);
+  }
+  .result-label{
+    font-size:12px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--text-muted);
+    font-weight:800;
+    margin-bottom:14px;
+  }
+  .result-num{
+    font-size:48px;
+    font-weight:800;
+    letter-spacing:-1px;
+    color:var(--cobalt);
+    line-height:1;
+  }
+  .result-desc{
+    margin-top:12px;
+    font-size:13.5px;
+    color:var(--text-muted);
+  }
+
+  /* ============ TESTIMONIALS ============ */
+  .testi-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:24px;
+  }
+  .testi-card{
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:32px;
+    box-shadow:0 8px 30px rgba(16,24,40,0.05);
+  }
+  .stars{
+    color:var(--cobalt);
+    font-size:14px;
+    letter-spacing:2px;
+    margin-bottom:18px;
+  }
+  .testi-text{
+    font-size:15px;
+    line-height:1.65;
+    color:var(--text-deep);
+    margin-bottom:24px;
+    min-height:80px;
+  }
+  .testi-person{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding-top:18px;
+    border-top:1px solid var(--border);
+  }
+  .testi-avatar{
+    width:38px;height:38px;
+    border-radius:50%;
+    background:linear-gradient(135deg, var(--cobalt), var(--cobalt-soft));
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800;
+    font-size:14px;
+    color:var(--white);
+  }
+  .testi-name{ font-size:14px; font-weight:700; color:var(--text-deep); }
+  .testi-course{ font-size:12px; color:var(--text-muted); }
+
+  /* ============ FINAL CTA ============ */
+  .final-cta{
+    position:relative;
+    border-radius:28px;
+    padding:72px 60px;
+    background:linear-gradient(135deg, var(--cobalt), var(--cobalt-soft));
+    overflow:hidden;
+    text-align:center;
+  }
+  .final-cta::before{
+    content:"";
+    position:absolute;
+    top:-160px; left:50%;
+    transform:translateX(-50%);
+    width:600px; height:400px;
+    background:radial-gradient(ellipse, rgba(255,255,255,0.18), transparent 70%);
+  }
+  .final-cta h2{
+    font-weight:800;
+    font-size:36px;
+    letter-spacing:-0.8px;
+    color:var(--white);
+    max-width:640px;
+    margin:0 auto 18px;
+    position:relative;
+  }
+  .final-cta p{
+    color:rgba(255,255,255,0.85);
+    font-size:16px;
+    max-width:480px;
+    margin:0 auto 36px;
+    position:relative;
+  }
+  .final-cta .hero-cta{
+    justify-content:center;
+    animation:none;
+    opacity:1;
+    position:relative;
+  }
+
+  /* ============ FOOTER ============ */
+  footer{
+    position:relative;
+    z-index:1;
+    border-top:1px solid var(--border);
+    padding:64px 0 32px;
+    background:var(--white);
+  }
+  .footer-grid{
+    display:grid;
+    grid-template-columns:1.4fr 1fr 1fr 1fr;
+    gap:40px;
+    padding-bottom:48px;
+  }
+  .footer-brand .logo{ margin-bottom:14px; }
+  .footer-brand p{
+    font-size:14px;
+    color:var(--text-muted);
+    line-height:1.6;
+    max-width:280px;
+  }
+  .footer-col-title{
+    font-size:12px;
+    letter-spacing:1.2px;
+    text-transform:uppercase;
+    color:var(--text-deep);
+    font-weight:800;
+    margin-bottom:18px;
+  }
+  .footer-col a, .footer-col div{
+    display:block;
+    font-size:14px;
+    color:var(--text-muted);
+    margin-bottom:12px;
+    transition:color 0.25s ease;
+  }
+  .footer-col a:hover{ color:var(--cobalt); }
+  .footer-bottom{
+    padding-top:28px;
+    border-top:1px solid var(--border);
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    color:var(--text-muted);
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width:1024px){
+    .container, .nav-shell{ padding:0 24px; }
+    .hero-grid{ grid-template-columns:1fr; gap:70px; }
+    .hero{ padding-top:150px; }
+    .hero-visual{ height:420px; max-width:420px; margin:0 auto; }
+    h1.headline{ font-size:44px; }
+    .courses-grid{ grid-template-columns:1fr 1fr; }
+    .benefits-grid{ grid-template-columns:1fr 1fr; }
+    .benefit-card.large{ grid-row:span 1; }
+    .results-grid{ grid-template-columns:1fr 1fr; }
+    .testi-grid{ grid-template-columns:1fr 1fr; }
+    .footer-grid{ grid-template-columns:1fr 1fr; }
+    nav ul{ display:none; }
+  }
+
+  @media (max-width:768px){
+    .offers-grid{ grid-template-columns:1fr; }
+    .courses-grid{ grid-template-columns:1fr; }
+    .benefits-grid{ grid-template-columns:1fr; }
+    .results-grid{ grid-template-columns:1fr; }
+    .testi-grid{ grid-template-columns:1fr; }
+    .footer-grid{ grid-template-columns:1fr; gap:32px; }
+    section{ padding:72px 0; }
+    .hero{ padding:130px 0 64px; }
+  }
+
+  @media (max-width:430px){
+    .container, .nav-shell{ padding:0 16px; }
+    header{ top:12px; }
+    .nav-inner{ padding:12px 16px; }
+    h1.headline{ font-size:32px; letter-spacing:-0.8px; }
+    .hero-lead{ font-size:15px; }
+    .hero-cta{ flex-direction:column; }
+    .btn{ width:100%; justify-content:center; }
+    .hero-trust{ gap:20px; flex-wrap:wrap; }
+    h2.section-title{ font-size:26px; }
+    .nav-links .btn{ display:none; }
+    .hamburger{
+      display:flex;
+      flex-direction:column;
+      gap:5px;
+      cursor:pointer;
+      padding:6px;
+    }
+    .hamburger span{
+      width:20px; height:2px;
+      background:var(--text-deep);
+      border-radius:2px;
+    }
+    .dash-card{ width:100%; position:static; margin-bottom:16px; }
+    .float-card{ position:static; margin-top:12px; width:fit-content; }
+    .fc-1,.fc-2{ animation:none; }
+    .hero-visual{ height:auto; display:flex; flex-direction:column; }
+    .final-cta{ padding:48px 26px; border-radius:22px; }
+    .final-cta h2{ font-size:26px; }
+    .footer-bottom{ flex-direction:column; gap:8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-atmosphere"></div>
+
+<header id="siteHeader">
+  <div class="nav-shell">
+    <div class="nav-inner">
+      <div class="logo">
+        <div class="logo-mark"></div>
+        <span class="edu">Edu</span><span class="insight">&nbsp;Insight</span>
+        <span class="logo-sub">Learning Center</span>
+      </div>
+      <div class="nav-links">
+        <nav>
+          <ul>
+            <li><a href="#courses">Kurslar</a></li>
+            <li><a href="#about">Biz haqimizda</a></li>
+            <li><a href="#results">Natijalar</a></li>
+            <li><a href="#reviews">Fikrlar</a></li>
+            <li><a href="#contact">Aloqa</a></li>
+          </ul>
+        </nav>
+        <a href="#contact" class="btn btn-primary btn-small">Bepul test</a>
+      </div>
+      <div class="hamburger"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="badge">Yangi o'quvchilar uchun</div>
+      <h1 class="headline">Bilimga <em>birinchi qadam</em> — bugun qo'ying.</h1>
+      <p class="hero-lead">Edu Insight — Ingliz tili, Matematika va Rus tili bo'yicha tajribali ustozlar bilan sifatli ta'lim. Toshkentdagi zamonaviy o'quv markazi.</p>
+      <div class="hero-cta">
+        <a href="#level-test" class="btn btn-primary">Bepul daraja aniqlash</a>
+        <a href="tel:+998958532205" class="btn btn-secondary">Qo'ng'iroq qilish</a>
+      </div>
+      <div class="hero-trust">
+        <div class="hero-trust-item">
+          <div class="num">3</div>
+          <div class="label">Yo'nalish</div>
+        </div>
+        <div class="hero-trust-item">
+          <div class="num">Toshkent</div>
+          <div class="label">Joylashuv</div>
+        </div>
+        <div class="hero-trust-item">
+          <div class="num">100%</div>
+          <div class="label">Individual yondashuv</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="dash-card">
+        <div class="dash-head">
+          <div class="dash-brand">Edu Insight</div>
+          <div class="dash-status">Faol</div>
+        </div>
+        <div class="dash-title">O'quvchi rivojlanishi</div>
+        <div class="progress-row">
+          <div class="progress-label"><span>Ingliz tili</span><span>82%</span></div>
+          <div class="progress-track"><div class="progress-fill" data-width="82"></div></div>
+        </div>
+        <div class="progress-row">
+          <div class="progress-label"><span>Matematika</span><span>71%</span></div>
+          <div class="progress-track"><div class="progress-fill purple" data-width="71"></div></div>
+        </div>
+        <div class="progress-row">
+          <div class="progress-label"><span>Rus tili</span><span>91%</span></div>
+          <div class="progress-track"><div class="progress-fill green" data-width="91"></div></div>
+        </div>
+      </div>
+      <div class="float-card fc-1">
+        <div class="fc-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3157D5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        Yangi o'quvchi qo'shildi
+      </div>
+      <div class="float-card fc-2">
+        <div class="fc-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#18A878" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg>
+        </div>
+        Progress oshdi
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="offers" class="bg-white">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow-sm">Maxsus taklif</span>
+      <h2 class="section-title">Hoziroq boshlash uchun eng yaxshi vaqt</h2>
+    </div>
+    <div class="offers-grid">
+      <div class="offer-card reveal">
+        <div class="offer-num">−50%</div>
+        <div class="offer-title">Birinchi oy uchun chegirma</div>
+        <div class="offer-desc">Hoziroq qo'ng'iroq qilib ro'yxatdan o'tgan yangi o'quvchilar uchun maxsus taklif.</div>
+        <a href="#contact" class="btn btn-ghost">Taklifni ko'rish <span class="arrow">→</span></a>
+      </div>
+      <div class="offer-card green reveal">
+        <div class="offer-num">+1 OY</div>
+        <div class="offer-title">Do'stingizni taklif qiling</div>
+        <div class="offer-desc">Do'stingiz yoki tanishingizni olib keling — ikkovingiz uchun ham 1 oy bepul ta'lim.</div>
+        <a href="#contact" class="btn btn-ghost">Batafsil <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="level-test" class="bg-white">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow-sm">Bepul test</span>
+      <h2 class="section-title">Ingliz tili darajangizni aniqlang</h2>
+      <p class="section-sub">10 ta savolga javob bering — natija darhol chiqadi va sizga mos guruhni tavsiya qilamiz.</p>
+    </div>
+
+    <div class="quiz-card reveal">
+
+      <div id="quizIntro" class="quiz-stage">
+        <div class="quiz-intro-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3157D5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <p class="quiz-intro-text">Test taxminan 3 daqiqa vaqt oladi. Har bir savolda faqat bitta to'g'ri javob bor.</p>
+        <button class="btn btn-primary" id="startQuizBtn">Testni boshlash</button>
+      </div>
+
+      <div id="quizBody" class="quiz-stage" style="display:none;">
+        <div class="quiz-progress">
+          <div class="quiz-progress-track"><div class="quiz-progress-fill" id="quizProgressFill"></div></div>
+          <div class="quiz-progress-label"><span id="quizStepNum">1</span> / <span id="quizTotal">10</span></div>
+        </div>
+        <div class="quiz-question" id="quizQuestion"></div>
+        <div class="quiz-options" id="quizOptions"></div>
+      </div>
+
+      <div id="quizResult" class="quiz-stage" style="display:none;">
+        <div class="quiz-result-badge" id="quizLevelBadge">B1</div>
+        <div class="quiz-result-title" id="quizLevelTitle">Sizning darajangiz — B1 (O'rta daraja)</div>
+        <p class="quiz-result-desc" id="quizLevelDesc">Siz asosiy grammatika va lug'atni bilasiz. Endi nutq va murakkabroq mavzularni mustahkamlash vaqti keldi.</p>
+        <div class="quiz-result-cta">
+          <a href="tel:+998958532205" class="btn btn-primary">Qo'ng'iroq qilish</a>
+          <button class="btn btn-secondary" id="retakeQuizBtn">Qayta topshirish</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="courses">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow-sm">Yo'nalishlar</span>
+      <h2 class="section-title">Sizga mos yo'nalishni tanlang</h2>
+      <p class="section-sub">Har bir yo'nalish tajribali ustozlar va aniq metodika asosida olib boriladi.</p>
+    </div>
+    <div class="courses-grid">
+      <div class="course-card reveal">
+        <div class="course-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3157D5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>
+        </div>
+        <div class="course-name">Ingliz tili</div>
+        <div class="course-desc">Barcha darajalar uchun kurslar, IELTS tayyorlov guruhlari.</div>
+        <a href="#contact" class="btn btn-ghost">Kursni ko'rish <span class="arrow">→</span></a>
+      </div>
+      <div class="course-card reveal">
+        <div class="course-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3157D5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8.01" y2="10"/><line x1="12" y1="10" x2="12.01" y2="10"/><line x1="16" y1="10" x2="16.01" y2="10"/><line x1="8" y1="14" x2="8.01" y2="14"/><line x1="12" y1="14" x2="12.01" y2="14"/><line x1="16" y1="14" x2="16.01" y2="14"/><line x1="8" y1="18" x2="16" y2="18"/></svg>
+        </div>
+        <div class="course-name">Matematika</div>
+        <div class="course-desc">Maktab dasturi va mustaqil imtihonlarga tayyorlov.</div>
+        <a href="#contact" class="btn btn-ghost">Kursni ko'rish <span class="arrow">→</span></a>
+      </div>
+      <div class="course-card reveal">
+        <div class="course-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3157D5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        </div>
+        <div class="course-name">Rus tili</div>
+        <div class="course-desc">Nutq, grammatika va amaliy muloqot ko'nikmalari.</div>
+        <a href="#contact" class="btn btn-ghost">Kursni ko'rish <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="bg-white">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow-sm">Afzalliklar</span>
+      <h2 class="section-title">Nega Edu Insight?</h2>
+    </div>
+    <div class="benefits-grid">
+      <div class="benefit-card large reveal">
+        <div class="benefit-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3157D5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg>
+        </div>
+        <div class="benefit-title">Tajribali ustozlar</div>
+        <div class="benefit-desc">Individual yondashuv va zamonaviy metodika har bir darsda.</div>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="benefit-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3157D5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>
+        </div>
+        <div class="benefit-title">Aniq natija</div>
+        <div class="benefit-desc">O'quvchining rivojlanishini muntazam kuzatib boring.</div>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="benefit-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3157D5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/></svg>
+        </div>
+        <div class="benefit-title">Qulay muhit</div>
+        <div class="benefit-desc">O'rganish uchun qulay va motivatsion muhit.</div>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="benefit-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3157D5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        </div>
+        <div class="benefit-title">Ota-onalar bilan aloqa</div>
+        <div class="benefit-desc">O'quv jarayoni haqida muntazam ma'lumot.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="results" class="bg-soft">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow-sm">Natijalar</span>
+      <h2 class="section-title">Natijalar gapiradi</h2>
+      <p class="section-sub">O'quvchilarimizning erishgan natijalaridan namunalar.</p>
+    </div>
+    <div class="results-grid">
+      <div class="result-card reveal">
+        <div class="result-label">IELTS</div>
+        <div class="result-num">7.0</div>
+        <div class="result-desc">O'quvchi natijasi</div>
+      </div>
+      <div class="result-card reveal">
+        <div class="result-label">CEFR</div>
+        <div class="result-num">B2</div>
+        <div class="result-desc">O'quvchi natijasi</div>
+      </div>
+      <div class="result-card reveal">
+        <div class="result-label">Progress</div>
+        <div class="result-num">+32%</div>
+        <div class="result-desc">O'quvchi rivojlanishi</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="reviews" class="bg-white">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow-sm">Fikrlar</span>
+      <h2 class="section-title">O'quvchilarimiz fikri</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="stars">★★★★★</div>
+        <div class="testi-text">"Edu Insight'da darslar juda tushunarli va qiziqarli. Ustozlar har bir savolga alohida e'tibor berishadi."</div>
+        <div class="testi-person">
+          <div class="testi-avatar">O</div>
+          <div>
+            <div class="testi-name">O'quvchi</div>
+            <div class="testi-course">Ingliz tili kursi</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="stars">★★★★★</div>
+        <div class="testi-text">"Matematika bo'yicha bilimim sezilarli darajada oshdi. Ustoz mavzularni sodda tilda tushuntiradi."</div>
+        <div class="testi-person">
+          <div class="testi-avatar">O</div>
+          <div>
+            <div class="testi-name">O'quvchi</div>
+            <div class="testi-course">Matematika kursi</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="stars">★★★★★</div>
+        <div class="testi-text">"Muhit juda qulay, darslarga borgim keladi. Rus tilini o'rganish endi menga oson bo'lib qoldi."</div>
+        <div class="testi-person">
+          <div class="testi-avatar">O</div>
+          <div>
+            <div class="testi-name">O'quvchi</div>
+            <div class="testi-course">Rus tili kursi</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="final-cta reveal">
+      <h2>Bilimga birinchi qadamni bugun qo'ying.</h2>
+      <p>O'zingizga mos kursni tanlang va Edu Insight bilan rivojlanishni boshlang.</p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-on-cobalt">Bepul maslahat olish</a>
+        <a href="#contact" class="btn btn-outline-white">Qo'ng'iroq qilish</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo"><div class="logo-mark"></div><span class="edu">Edu</span><span class="insight">&nbsp;Insight</span></div>
+        <p>Toshkentdagi zamonaviy o'quv markazi. Ingliz tili, Matematika va Rus tili bo'yicha sifatli ta'lim.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Kurslar</div>
+        <a href="#courses">Ingliz tili</a>
+        <a href="#courses">Matematika</a>
+        <a href="#courses">Rus tili</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Havolalar</div>
+        <a href="#about">Biz haqimizda</a>
+        <a href="#results">Natijalar</a>
+        <a href="#reviews">Fikrlar</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Aloqa</div>
+        <div>📞 <a href="tel:+998958532205">+998 95 853 22 05</a></div>
+        <div>📍 Yakkadil, 19-proezd, 2-uy</div>
+        <div>📱 Telegram</div>
+        <div>📸 Instagram</div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 Edu Insight Learning Center</div>
+      <div>Toshkent, O'zbekiston</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => {
+    if(window.scrollY > 40){ header.classList.add('scrolled'); }
+    else{ header.classList.remove('scrolled'); }
+  });
+
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.querySelectorAll('.progress-fill').forEach(fill => {
+        fill.style.width = fill.dataset.width + '%';
+      });
+    }, 500);
+  });
+
+  // ============ LEVEL TEST ============
+  const quizQuestions = [
+    { q: "I ___ from Uzbekistan.", options: ["am", "is", "be", "are"], correct: 0 },
+    { q: "She ___ to school every day.", options: ["go", "goes", "going", "gone"], correct: 1 },
+    { q: "They ___ watching a movie right now.", options: ["is", "am", "are", "be"], correct: 2 },
+    { q: "I ___ my homework yesterday.", options: ["finish", "finished", "finishing", "finishes"], correct: 1 },
+    { q: "Choose the correct sentence:", options: ["He don't like coffee.", "He doesn't likes coffee.", "He doesn't like coffee.", "He not like coffee."], correct: 2 },
+    { q: "By the time we arrived, the movie ___ already started.", options: ["has", "had", "have", "was"], correct: 1 },
+    { q: "If I ___ more time, I would learn French.", options: ["have", "had", "having", "has"], correct: 1 },
+    { q: "The report ___ by the team next week.", options: ["will finish", "will be finished", "finishes", "is finishing"], correct: 1 },
+    { q: "She speaks English as if she ___ a native speaker.", options: ["is", "was", "were", "be"], correct: 2 },
+    { q: "Choose the word closest in meaning to 'meticulous':", options: ["careless", "careful", "quick", "lazy"], correct: 1 }
+  ];
+
+  let currentQ = 0;
+  let score = 0;
+
+  const quizIntro = document.getElementById('quizIntro');
+  const quizBody = document.getElementById('quizBody');
+  const quizResult = document.getElementById('quizResult');
+  const startBtn = document.getElementById('startQuizBtn');
+  const retakeBtn = document.getElementById('retakeQuizBtn');
+  const qEl = document.getElementById('quizQuestion');
+  const optsEl = document.getElementById('quizOptions');
+  const progFill = document.getElementById('quizProgressFill');
+  const stepNum = document.getElementById('quizStepNum');
+  document.getElementById('quizTotal').textContent = quizQuestions.length;
+
+  function startQuiz(){
+    currentQ = 0; score = 0;
+    quizIntro.style.display = 'none';
+    quizResult.style.display = 'none';
+    quizBody.style.display = 'block';
+    renderQuestion();
+  }
+
+  function renderQuestion(){
+    const item = quizQuestions[currentQ];
+    qEl.textContent = (currentQ + 1) + ". " + item.q;
+    stepNum.textContent = currentQ + 1;
+    progFill.style.width = ((currentQ) / quizQuestions.length * 100) + '%';
+    optsEl.innerHTML = '';
+    item.options.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'quiz-option';
+      btn.textContent = opt;
+      btn.addEventListener('click', () => selectAnswer(i));
+      optsEl.appendChild(btn);
+    });
+  }
+
+  function selectAnswer(i){
+    if(i === quizQuestions[currentQ].correct){ score++; }
+    currentQ++;
+    if(currentQ < quizQuestions.length){
+      renderQuestion();
+    } else {
+      progFill.style.width = '100%';
+      setTimeout(showResult, 250);
+    }
+  }
+
+  function showResult(){
+    quizBody.style.display = 'none';
+    quizResult.style.display = 'block';
+
+    let level, title, desc;
+    if(score <= 2){
+      level = 'A1'; title = "Sizning darajangiz — A1 (Boshlang'ich)";
+      desc = "Siz ingliz tilini endi o'rganishni boshlayapsiz. Asosiy grammatika va lug'at bilan mustahkam poydevor qurish uchun boshlang'ich guruhimiz mos keladi.";
+    } else if(score <= 4){
+      level = 'A2'; title = "Sizning darajangiz — A2 (Elementar)";
+      desc = "Siz oddiy jumlalar va kundalik iboralarni tushunasiz. Grammatikani kengaytirish va lug'at boyligini oshirish bosqichidasiz.";
+    } else if(score <= 6){
+      level = 'B1'; title = "Sizning darajangiz — B1 (O'rta daraja)";
+      desc = "Siz asosiy grammatika va lug'atni bilasiz. Endi nutq va murakkabroq mavzularni mustahkamlash vaqti keldi.";
+    } else if(score <= 8){
+      level = 'B2'; title = "Sizning darajangiz — B2 (Yuqori o'rta daraja)";
+      desc = "Siz erkin muloqot qila olasiz va murakkab matnlarni tushunasiz. IELTS yoki professional ingliz tiliga tayyorgarlik guruhimiz sizga mos.";
+    } else {
+      level = 'C1'; title = "Sizning darajangiz — C1 (Yuqori daraja)";
+      desc = "Siz ingliz tilida erkin va aniq fikr bildira olasiz. Ilg'or guruhimizda darajangizni yanada mukammallashtirishingiz mumkin.";
+    }
+
+    document.getElementById('quizLevelBadge').textContent = level;
+    document.getElementById('quizLevelTitle').textContent = title;
+    document.getElementById('quizLevelDesc').textContent = desc;
+  }
+
+  startBtn.addEventListener('click', startQuiz);
+  retakeBtn.addEventListener('click', startQuiz);
+</script>
+
+</body>
+</html>
